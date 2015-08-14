@@ -1,0 +1,35 @@
+{
+  "name": "hello-elm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "watch": "^0.16.0",
+	"parallelshell": "latest"
+  },
+  "devDependencies": {},
+  "scripts": {
+  	"elm" :  		"elm-make src/app/main.elm --output dist/scripts/elm.js",
+	"elm:watch": 	"onchange 'src/**/*.elm' -- npm run elm",
+
+	"html":  		"cp src/app/index.html dist/index.html",
+	"html:watch": 	"onchange 'src/**/*.html' -- npm run html",
+
+	"css":   		"cp src/app/styles.css dist/styles/styles.css",
+	"css:watch": 	"onchange 'src/**/*.css' -- npm run css",
+
+	"watch": 		"parallelshell 'npm run elm:watch' 'npm run html:watch' 'npm run css:watch' ",
+
+	"prebuild": 	"mkdir -p dist/styles dist/scripts",
+    "build": 		"npm run elm && npm run html && npm run css",
+
+	"livereload": 	"live-reload --port 9091 dist/ ",
+
+	"preserver":	"npm run build",
+	"server": 		"cd dist/ && python -m SimpleHTTPServer 8000 dist/",
+	
+	"devserver":	"parallelshell 'npm run watch' 'npm run server' 'npm run livereload'"
+  },
+  "author": "Naissur",
+  "license": "ISC"
+}
